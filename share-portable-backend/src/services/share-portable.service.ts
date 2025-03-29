@@ -20,10 +20,6 @@ class SharePortableService {
   }
 
   public async uploadFileServices(filePayload: IFileCreate) {
-    scannerLogger.info(`Clearing the Uploads Directory`);
-
-    await this.fileHelper.clearTheUploadFiles();
-    
     const { originalname, encoding, mimetype, fieldname } = filePayload;
 
     const isValidFieldName =
@@ -91,6 +87,10 @@ class SharePortableService {
             The File Upload and Publish Process Has been Failed, Reprocessing Again`
       );
     }
+
+    scannerLogger.info(`Clearing the Uploads Directory`);
+
+    await this.fileHelper.clearTheUploadFiles();
 
     return {
       message: `The Message has been Extracted and Created and Published`,
