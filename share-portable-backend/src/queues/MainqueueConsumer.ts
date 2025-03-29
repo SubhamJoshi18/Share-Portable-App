@@ -16,7 +16,7 @@ class MainQueueManager {
     retries = 0,
     MAX_RETRIES = 5,
     INITIAL_DELAY_MS = 1000
-  ): Promise<any> {
+  ): Promise<void> {
     try {
       this.connection = await amqplib.connect(this.rabbitmqUrl);
       this.channel = await this.connection.createChannel();

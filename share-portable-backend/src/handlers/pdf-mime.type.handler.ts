@@ -17,12 +17,12 @@ import { Channel } from "amqplib";
 const fileHelper = new FileHelper();
 const urlRepository = new UrlRepository();
 
-async function handleJsonMimeType(payload: IFileCreate, isJson = true) {
+async function handlePDFJsonType(payload: IFileCreate, isJson = true) {
   const channel = await new MainQueueManager().getChannel();
 
   return new Promise(async (resolve, reject) => {
     scannerLogger.info(
-      `JSON Handler Extracting and Uploading File and Creating QR Code`
+      `PDF Handler Extracting and Uploading File and Creating QR Code`
     );
 
     const { size, path: filePath, urlId } = payload;
@@ -32,7 +32,7 @@ async function handleJsonMimeType(payload: IFileCreate, isJson = true) {
     if (!isValidFileSize) {
       throw new ValidationException(
         HTTP_STATUS.VALIDATION_ERROR.CODE,
-        `HandleJson: The File is Potential Empty, Please Enter a Non Empty File`
+        `HandlePDF: The File is Potential Empty, Please Enter a Non Empty File`
       );
     }
 
@@ -45,7 +45,7 @@ async function handleJsonMimeType(payload: IFileCreate, isJson = true) {
       );
     }
 
-    const { status, path: finalCopyPath } = await fileHelper.uploadToJsonObject(
+    const { status, path: finalCopyPath } = await fileHelper.uploadToPdf(
       payload["urlId"] as string,
       path.join(process.cwd(), filePath)
     );
@@ -53,7 +53,7 @@ async function handleJsonMimeType(payload: IFileCreate, isJson = true) {
     if (typeof status === "boolean" && !status) {
       throw new ValidationException(
         HTTP_STATUS.VALIDATION_ERROR.CODE,
-        `HandleJson: Error while Copying the File to the S3 Bucket`
+        `HandlePDF: Error while Copying the File to the S3 Bucket`
       );
     }
 
@@ -67,18 +67,18 @@ async function handleJsonMimeType(payload: IFileCreate, isJson = true) {
 
     if (validUpdated) {
       scannerLogger.info(
-        `HandleJson: The Status of File has been Changed to Copied to S3 Bucket`
+        `HandlePDF: The Status of File has been Changed to Copied to S3 Bucket`
       );
     }
 
     const urlPayload = Object.preventExtensions({
       urlId: urlId,
       filePath: finalCopyPath,
-      fileType: "json",
+      fileType: "pdf",
     });
 
     scannerLogger.info(
-      `HandleJson: Publishing Payload : ${JSON.stringify(urlPayload)} `
+      `HandlePDF: Publishing Payload : ${JSON.stringify(urlPayload)} `
     );
 
     const publishResult = await publishToCreateZipFile(
@@ -89,4 +89,4 @@ async function handleJsonMimeType(payload: IFileCreate, isJson = true) {
   });
 }
 
-export { handleJsonMimeType };
+export { handlePDFJsonType };

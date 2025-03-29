@@ -3,6 +3,7 @@ const fileMimeTypes = {
   jpeg: true,
   jpg: true,
   [`vnd.openxmlformats-officedocument.wordprocessingml.document`]: true,
+  pdf: true,
 } as const;
 
 export { fileMimeTypes };

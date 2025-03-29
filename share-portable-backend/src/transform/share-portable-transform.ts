@@ -1,10 +1,12 @@
 import {
   JPEG_MIME_TYPE,
   JSON_MIME_TYPE,
+  PDF_MIME_TYPE,
   WORD_MIME_TYPE,
 } from "../constants/mime-type.constant";
 import { handleJPEGMimeType } from "../handlers/jpeg-mime-type.handler";
 import { handleJsonMimeType } from "../handlers/json-mime-type.handler";
+import { handlePDFJsonType } from "../handlers/pdf-mime.type.handler";
 import { handleWordDocument } from "../handlers/word-mime-type.handler";
 import { IFileCreate } from "../interfaces/share-portable.interface";
 import scannerLogger from "../libs/logger";
@@ -29,6 +31,12 @@ async function transformAndHandleMimeTypes(
 
       case WORD_MIME_TYPE: {
         const result = await handleWordDocument(payload);
+        resolve(result);
+        break;
+      }
+
+      case PDF_MIME_TYPE: {
+        const result = await handlePDFJsonType(payload);
         resolve(result);
         break;
       }

@@ -76,6 +76,80 @@ class FileHelper {
     }
   }
 
+  public async uploadToJsonObject(urlId: string, uploadedPath: string) {
+    const wordBaseDir = path.join(process.cwd(), "S3Bucket", "JSON", urlId);
+
+    if (!fs.existsSync(wordBaseDir)) {
+      scannerLogger.info(`${wordBaseDir} Object Has been Created`);
+      fs.mkdirSync(wordBaseDir, { recursive: true });
+    }
+
+    scannerLogger.info(`${wordBaseDir} Is Created`);
+
+    const isValidDirectory = fs.lstatSync(wordBaseDir).isDirectory();
+    const [filePath, uploadPath] = uploadedPath.split("uploads");
+
+    if (isValidDirectory) {
+      const copyStatus = fs.copyFileSync(
+        uploadedPath,
+        path.join(wordBaseDir, uploadPath)
+      );
+      scannerLogger.info(
+        `The Source File :${uploadedPath} Has been Copied Successfully to S3Bucket : ${path.join(
+          wordBaseDir,
+          uploadPath
+        )}`
+      );
+      return {
+        status: true,
+        path: path.join(wordBaseDir, uploadPath),
+      };
+    } else {
+      scannerLogger.error(`The ${wordBaseDir} is not Valid Directory`);
+      return {
+        status: false,
+        path: "",
+      };
+    }
+  }
+
+  public async uploadToPdf(urlId: string, uploadedPath: string) {
+    const wordBaseDir = path.join(process.cwd(), "S3Bucket", "PDF", urlId);
+
+    if (!fs.existsSync(wordBaseDir)) {
+      scannerLogger.info(`${wordBaseDir} Object Has been Created`);
+      fs.mkdirSync(wordBaseDir, { recursive: true });
+    }
+
+    scannerLogger.info(`${wordBaseDir} Is Created`);
+
+    const isValidDirectory = fs.lstatSync(wordBaseDir).isDirectory();
+    const [filePath, uploadPath] = uploadedPath.split("uploads");
+
+    if (isValidDirectory) {
+      const copyStatus = fs.copyFileSync(
+        uploadedPath,
+        path.join(wordBaseDir, uploadPath)
+      );
+      scannerLogger.info(
+        `The Source File :${uploadedPath} Has been Copied Successfully to S3Bucket : ${path.join(
+          wordBaseDir,
+          uploadPath
+        )}`
+      );
+      return {
+        status: true,
+        path: path.join(wordBaseDir, uploadPath),
+      };
+    } else {
+      scannerLogger.error(`The ${wordBaseDir} is not Valid Directory`);
+      return {
+        status: false,
+        path: "",
+      };
+    }
+  }
+
   public async uploadToJPEGObject(urlId: string, uploadedPath: string) {
     const jsonBaseDir = path.join(process.cwd(), "S3Bucket", "JPEG", urlId);
 

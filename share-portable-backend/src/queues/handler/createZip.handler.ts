@@ -8,9 +8,7 @@ import {
 import archiver from "archiver";
 import FileHelper from "../../helpers/file.helper";
 import fs from "fs";
-import { stream } from "winston";
 import { publishToCreateQRCode } from "../publisher/createQRCodePublisher";
-import MainQueueManager from "../MainqueueConsumer";
 import { UrlRepository } from "../../repository/share-portable.repository";
 import { FILE_PUSH_TO_QRCODE_CONSUMER } from "../../constants/file.constant";
 
