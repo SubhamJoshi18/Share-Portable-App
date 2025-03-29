@@ -20,7 +20,7 @@ async function createZipConsumer(channel: Channel) {
 
     channel.consume(queueName, async (message: ConsumeMessage | null) => {
       try {
-        const { pushStatus } = await createZipHandler(message);
+        const { pushStatus } = await createZipHandler(message, channel);
         if (pushStatus) {
           scannerLogger.info(
             `Process Has been Completed For the Create ZIP Consumer`

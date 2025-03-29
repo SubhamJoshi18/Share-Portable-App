@@ -1,7 +1,10 @@
-import { ConsumeMessage } from "amqplib";
+import { Channel, ConsumeMessage } from "amqplib";
 import scannerLogger from "../../libs/logger";
 
-async function createQRCodeHandlers(msg: ConsumeMessage | null) {
+async function createQRCodeHandlers(
+  msg: ConsumeMessage | null,
+  channel: Channel
+) {
   try {
     if (msg?.content) {
       const content = msg.content.toString();

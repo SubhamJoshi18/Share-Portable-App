@@ -5,6 +5,7 @@ import {
   createZipQueueConfig,
 } from "../../config/queue.config";
 import createZipHandler from "../handler/createZip.handler";
+import createQRCodeHandlers from "../handler/createQRCode.handler";
 
 async function createQRCodeConsumer(channel: Channel) {
   try {
@@ -23,7 +24,7 @@ async function createQRCodeConsumer(channel: Channel) {
 
     channel.consume(queueName, async (message: ConsumeMessage | null) => {
       try {
-        await createZipHandler(message);
+        await createQRCodeHandlers(message, channel);
       } catch (err) {
         scannerLogger.error(
           `QRCodeConsumer: Error while handling the QRCode Consumer`

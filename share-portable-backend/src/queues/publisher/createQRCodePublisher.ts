@@ -15,8 +15,6 @@ import {
   FILE_PUSH_TO_ZIPCONSUMER,
 } from "../../constants/file.constant";
 
-const urlRepostiory = new UrlRepository();
-
 async function publishToCreateQRCode(
   channel: Channel,
   payload: ICreateQRCodePayload
@@ -34,18 +32,6 @@ async function publishToCreateQRCode(
       scannerLogger.info(
         `CreateQRCodePublisher: Message has been Published to the ${queueName}`
       );
-      const updatedStatus = await urlRepostiory.changeStatus(
-        payload["urlId"],
-        FILE_PUSH_TO_QRCODE_CONSUMER as IFileStatus
-      );
-
-      const validUpdated =
-        updatedStatus.acknowledged && updatedStatus.matchedCount > 0;
-
-      if (validUpdated)
-        scannerLogger.info(
-          `CreateQRCodePublisher: The File Status has been Updated to Push to QR Code Consumer`
-        );
 
       resolve(true);
     } catch (err) {

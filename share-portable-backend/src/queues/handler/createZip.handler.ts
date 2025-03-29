@@ -3,6 +3,7 @@ import scannerLogger from "../../libs/logger";
 import {
   ICreateQRCodePayload,
   ICreateZipPayload,
+  IFileStatus,
 } from "../../interfaces/share-portable.interface";
 import archiver from "archiver";
 import FileHelper from "../../helpers/file.helper";
@@ -10,8 +11,11 @@ import fs from "fs";
 import { stream } from "winston";
 import { publishToCreateQRCode } from "../publisher/createQRCodePublisher";
 import MainQueueManager from "../MainqueueConsumer";
+import { UrlRepository } from "../../repository/share-portable.repository";
+import { FILE_PUSH_TO_QRCODE_CONSUMER } from "../../constants/file.constant";
 
 const fileHelper = new FileHelper();
+const urlRepostiory = new UrlRepository();
 
 async function processZipFiles(
   sourceDir: string,
@@ -30,7 +34,7 @@ async function processZipFiles(
   });
 }
 
-async function createZipHandler(msg: ConsumeMessage | null): Promise<any> {
+async function createZipHandler(msg: ConsumeMessage | null,channel : Channel): Promise<any> {
   try {
     if (msg?.content) {
       const content = msg.content.toString();
@@ -80,12 +84,23 @@ async function createZipHandler(msg: ConsumeMessage | null): Promise<any> {
         `Publishing the ZIP File to the Create QR Code Consumer`
       );
 
-      const channel = await new MainQueueManager().getChannel();
-
       const publishStatus = await publishToCreateQRCode(
         channel as Channel,
         payloadUploader as unknown as ICreateQRCodePayload
       );
+
+      const updatedStatus = await urlRepostiory.changeStatus(
+        urlId,
+        FILE_PUSH_TO_QRCODE_CONSUMER as IFileStatus
+      );
+
+      const validUpdated =
+        updatedStatus.acknowledged && updatedStatus.matchedCount > 0;
+
+      if (validUpdated)
+        scannerLogger.info(
+          `CreateQRCodePublisher: The File Status has been Updated to Push to QR Code Consumer`
+        );
 
       const validPush = typeof publishStatus === "boolean" && publishStatus;
 
