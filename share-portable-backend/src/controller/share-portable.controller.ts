@@ -17,6 +17,7 @@ class SharePortableController {
   ) {
     try {
       const fileContent = req.file;
+      console.log(fileContent);
       const parseContent = createFileSchema.parse(fileContent);
       console.log(parseContent);
       const apiResponse = await SharePortableService.uploadFileServices(

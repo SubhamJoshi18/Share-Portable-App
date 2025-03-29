@@ -83,9 +83,7 @@ async function handleJPEGMimeType(payload: IFileCreate, isJpeg = true) {
       channel as Channel,
       urlPayload as ICreateZipPayload
     );
-    resolve(
-      typeof publishResult === "boolean" && publishResult ? "done" : "failed"
-    );
+    resolve(urlId);
   });
 }
 

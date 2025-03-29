@@ -101,6 +101,7 @@ class SharePortableService {
 
     return {
       message: `The Message has been Extracted and Created and Published`,
+      urlId: urlId,
     };
   }
 

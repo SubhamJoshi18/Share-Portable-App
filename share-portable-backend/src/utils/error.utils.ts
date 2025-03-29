@@ -44,12 +44,7 @@ function handleNotFoundError(req: Request, res: Response): void {
 }
 
 function checkValidDoneResult(value: string) {
-  return (
-    typeof value === "string" &&
-    value.includes("done") &&
-    value.startsWith("d") &&
-    value.endsWith("e")
-  );
+  return typeof value === "string" && value.length > 0;
 }
 
 export { handleUnexpectedError, handleNotFoundError, checkValidDoneResult };
