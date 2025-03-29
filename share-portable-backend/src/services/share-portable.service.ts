@@ -59,9 +59,8 @@ class SharePortableService {
           filePayload
         )} `
       );
+      urlId = crypto.createHash("sha256").update(fileData).digest("hex");
     }
-
-    urlId = crypto.createHash("sha256").update(fileData).digest("hex");
 
     const saveInitialResult = await this.urlRepostiory.createResult(urlId);
 
@@ -75,7 +74,7 @@ class SharePortableService {
 
     const result = await transformAndHandleMimeTypes(
       filePayload as IFileCreate,
-      mimetype as string
+      fileMimeType as string
     );
 
     if (!checkValidDoneResult(result as string)) {

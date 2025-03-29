@@ -4,5 +4,13 @@ const FILE_PROCESS = "processing";
 const FILE_UPLOAD = "upload";
 const FILE_LOADED = "loaded";
 const FILE_SENDED = "sended";
+const FILE_IDLE = "idle";
 
-export { FILE_MODULES, FILE_LOADED, FILE_PROCESS, FILE_UPLOAD, FILE_SENDED };
+export {
+  FILE_MODULES,
+  FILE_LOADED,
+  FILE_PROCESS,
+  FILE_UPLOAD,
+  FILE_SENDED,
+  FILE_IDLE,
+};

@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import {
+  FILE_IDLE,
   FILE_LOADED,
   FILE_PROCESS,
   FILE_SENDED,
@@ -28,8 +29,8 @@ const UrlSchema = new mongoose.Schema(
 
     status: {
       type: String,
-      enum: [FILE_LOADED, FILE_PROCESS, FILE_UPLOAD, FILE_SENDED],
-      default: "idle",
+      enum: [FILE_LOADED, FILE_PROCESS, FILE_UPLOAD, FILE_SENDED, FILE_IDLE],
+      default: FILE_IDLE,
     },
   },
   {
