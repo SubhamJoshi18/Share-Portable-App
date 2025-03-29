@@ -57,10 +57,16 @@ class FileHelper {
         )}`
       );
 
-      return true;
+      return {
+        status: true,
+        path: path.join(jsonBaseDir, uploadPath),
+      };
     } else {
       scannerLogger.error(`The ${jsonBaseDir} is not Valid Directory`);
-      return false;
+      return {
+        status: false,
+        path: "",
+      };
     }
   }
 }

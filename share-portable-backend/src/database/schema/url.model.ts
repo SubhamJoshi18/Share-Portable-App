@@ -1,8 +1,10 @@
 import mongoose from "mongoose";
 import {
+  FILE_COPIED,
   FILE_IDLE,
   FILE_LOADED,
   FILE_PROCESS,
+  FILE_PUSH_TO_ZIPCONSUMER,
   FILE_SENDED,
   FILE_UPLOAD,
 } from "../../constants/file.constant";
@@ -29,7 +31,15 @@ const UrlSchema = new mongoose.Schema(
 
     status: {
       type: String,
-      enum: [FILE_LOADED, FILE_PROCESS, FILE_UPLOAD, FILE_SENDED, FILE_IDLE],
+      enum: [
+        FILE_LOADED,
+        FILE_PROCESS,
+        FILE_UPLOAD,
+        FILE_SENDED,
+        FILE_IDLE,
+        FILE_PUSH_TO_ZIPCONSUMER,
+        FILE_COPIED,
+      ],
       default: FILE_IDLE,
     },
   },
