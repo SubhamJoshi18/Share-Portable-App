@@ -1,6 +1,7 @@
 import path from "path";
 import fs from "fs";
 import scannerLogger from "../libs/logger";
+import { url } from "inspector";
 
 class FileHelper {
   public async clearTheUploadFiles(): Promise<void> {
@@ -31,8 +32,13 @@ class FileHelper {
     return path.join(process.cwd(), "S3Bucket");
   }
 
-  public async uploadToJPEGObject(uploadedPath: string) {
-    const jsonBaseDir = path.join(process.cwd(), "S3Bucket", "JPEG");
+  public async getObjectBasedOnMimeType(objectKey: string, urlId: string) {
+    const s3BucketPath = await this.getS3BucketPath();
+    return path.join(s3BucketPath, objectKey, urlId);
+  }
+
+  public async uploadToJPEGObject(urlId: string, uploadedPath: string) {
+    const jsonBaseDir = path.join(process.cwd(), "S3Bucket", "JPEG", urlId);
 
     if (!fs.existsSync(jsonBaseDir)) {
       scannerLogger.info(`${jsonBaseDir} Object Has been Created`);
@@ -68,6 +74,30 @@ class FileHelper {
         path: "",
       };
     }
+  }
+
+  public async listAllFiles(path: string) {
+    return fs.readdirSync(path);
+  }
+
+  public async createZipFileBasedOnUrlId(
+    mimeType: string,
+    urlId: string
+  ): Promise<string> {
+    const zipBaseUrl = path.join(
+      process.cwd(),
+      "ZipFiles",
+      mimeType.toUpperCase()
+    );
+    const zipDir = path.join(zipBaseUrl, urlId);
+    const zipFilePath = path.join(zipDir, "payload.zip");
+
+    if (!fs.existsSync(zipDir)) {
+      scannerLogger.info(`Zip Directory Does not Exist, Creating it`);
+      fs.mkdirSync(zipDir, { recursive: true });
+    }
+
+    return zipFilePath;
   }
 }
 

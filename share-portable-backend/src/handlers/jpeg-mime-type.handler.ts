@@ -46,6 +46,7 @@ async function handleJPEGMimeType(payload: IFileCreate, isJpeg = true) {
     }
 
     const { status, path: finalCopyPath } = await fileHelper.uploadToJPEGObject(
+      payload["urlId"] as string,
       path.join(process.cwd(), filePath)
     );
 
@@ -73,6 +74,7 @@ async function handleJPEGMimeType(payload: IFileCreate, isJpeg = true) {
     const urlPayload = Object.preventExtensions({
       urlId: urlId,
       filePath: finalCopyPath,
+      fileType: "jpeg",
     });
 
     scannerLogger.info(`Publishing Payload : ${JSON.stringify(urlPayload)} `);

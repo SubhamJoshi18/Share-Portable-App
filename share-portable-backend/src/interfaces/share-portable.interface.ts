@@ -4,6 +4,7 @@ import {
   FILE_PROCESS,
   FILE_COPIED,
   FILE_PUSH_TO_ZIPCONSUMER,
+  FILE_PUSH_TO_QRCODE_CONSUMER,
 } from "../constants/file.constant";
 
 interface IFileCreate {
@@ -23,11 +24,17 @@ enum IFileStatus {
   load = FILE_LOADED,
   copied = FILE_COPIED,
   push_to_zip = FILE_PUSH_TO_ZIPCONSUMER,
+  push_to_qrCode = FILE_PUSH_TO_QRCODE_CONSUMER,
 }
 
 interface ICreateZipPayload {
   urlId: string;
   filePath: string;
+  fileType: string;
 }
 
-export { IFileCreate, IFileStatus, ICreateZipPayload };
+interface ICreateQRCodePayload extends ICreateZipPayload {
+  isZipFile: true;
+}
+
+export { IFileCreate, IFileStatus, ICreateZipPayload, ICreateQRCodePayload };

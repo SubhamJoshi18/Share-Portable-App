@@ -20,7 +20,12 @@ async function createZipConsumer(channel: Channel) {
 
     channel.consume(queueName, async (message: ConsumeMessage | null) => {
       try {
-        await createZipHandler(message);
+        const { pushStatus } = await createZipHandler(message);
+        if (pushStatus) {
+          scannerLogger.info(
+            `Process Has been Completed For the Create ZIP Consumer`
+          );
+        }
       } catch (err) {
         scannerLogger.error(
           `ZipConsumer: Error while handling the ZIP Consumer`

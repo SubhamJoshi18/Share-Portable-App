@@ -7,6 +7,7 @@ const FILE_SENDED = "sended";
 const FILE_IDLE = "idle";
 const FILE_COPIED = "Copy to S3 Bucket";
 const FILE_PUSH_TO_ZIPCONSUMER = "File Push to ZIP Consumer";
+const FILE_PUSH_TO_QRCODE_CONSUMER = "File Push to QRCode Consumer";
 
 export {
   FILE_MODULES,
@@ -17,4 +18,5 @@ export {
   FILE_IDLE,
   FILE_COPIED,
   FILE_PUSH_TO_ZIPCONSUMER,
+  FILE_PUSH_TO_QRCODE_CONSUMER
 };
