@@ -20,8 +20,8 @@ async function transformAndHandleMimeTypes(
       }
 
       case JPEG_MIME_TYPE: {
-        const reuslt = await handleJPEGMimeType(payload);
-        resolve(resolve);
+        const result = await handleJPEGMimeType(payload);
+        resolve(result);
         break;
       }
 
