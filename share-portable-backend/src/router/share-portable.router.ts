@@ -12,4 +12,14 @@ sharePortableRouter.post(
   SharePortableController.uploadFileController
 );
 
+sharePortableRouter.get(
+  "/get-qr-code/:urlId",
+  SharePortableController.getQRCode
+);
+
+sharePortableRouter.get(
+  "/download-qr-code/:urlId",
+  SharePortableController.getS3BucketPathAndDownload
+);
+
 export default sharePortableRouter;

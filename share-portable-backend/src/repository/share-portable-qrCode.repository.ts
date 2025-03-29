@@ -13,6 +13,13 @@ class QRCodeRepsotiory {
     });
     return savedResult;
   }
+
+  public async findUrlIdInQRCode(urlId: string) {
+    const result = await QRCodeModel.findOne({
+      urlId: urlId,
+    });
+    return result;
+  }
 }
 
 export default QRCodeRepsotiory;

@@ -35,6 +35,33 @@ class SharePortableController {
       next(err);
     }
   }
+
+  public async getS3BucketPathAndDownload(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) {
+    try {
+      const urlId = req.params.urlId;
+      const apiResponse = await SharePortableService.downloadQrCodeData(urlId);
+      res.download(apiResponse);
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  public async getQRCode(req: Request, res: Response, next: NextFunction) {
+    try {
+      const urlId = req.params.urlId;
+      const apiResponse = await SharePortableService.getQrCode(urlId);
+      const contentMessage = `The QR Code has been Generated`;
+      res.send(
+        `<img src="${apiResponse}" alt="QR Code"><p>Scan to download</p>`
+      );
+    } catch (err) {
+      next(err);
+    }
+  }
 }
 
 export default new SharePortableController();

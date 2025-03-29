@@ -25,11 +25,11 @@ async function createQRCodeHandlers(
         )}`
       );
 
-      const getBaseUrl = getEnvValue("BASE_URL") as string;
+      const { zipFilePath, urlId } = parseContent;
+
+      const getBaseUrl = `${getEnvValue("BASE_URL") as string}/${urlId}`;
 
       const qrCodeDataUrl = await QRCode.toDataURL(getBaseUrl);
-
-      const { zipFilePath, urlId } = parseContent;
 
       const savedResult = await qrCodeRepository.createQrCodeData(
         urlId,
