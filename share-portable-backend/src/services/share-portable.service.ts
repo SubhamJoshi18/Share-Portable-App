@@ -8,15 +8,22 @@ import { checkValidDoneResult } from "../utils/error.utils";
 import crypto from "crypto";
 import { UrlRepository } from "../repository/share-portable.repository";
 import scannerLogger from "../libs/logger";
+import FileHelper from "../helpers/file.helper";
 
 class SharePortableService {
   public urlRepostiory: UrlRepository;
+  public fileHelper: FileHelper;
 
   constructor() {
     this.urlRepostiory = new UrlRepository();
+    this.fileHelper = new FileHelper();
   }
 
   public async uploadFileServices(filePayload: IFileCreate) {
+    scannerLogger.info(`Clearing the Uploads Directory`);
+
+    await this.fileHelper.clearTheUploadFiles();
+    
     const { originalname, encoding, mimetype, fieldname } = filePayload;
 
     const isValidFieldName =

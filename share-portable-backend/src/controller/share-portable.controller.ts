@@ -19,9 +19,9 @@ class SharePortableController {
       const fileContent = req.file;
       const parseContent = createFileSchema.parse(fileContent);
       console.log(parseContent);
-        const apiResponse = await SharePortableService.uploadFileServices(
-          parseContent
-        );
+      const apiResponse = await SharePortableService.uploadFileServices(
+        parseContent
+      );
       const contentMessage = `The File has been Uploaded, QR Code is Also Generated`;
       sendSuccessResponse(res, apiResponse, contentMessage);
     } catch (err) {
