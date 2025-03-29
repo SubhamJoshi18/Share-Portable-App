@@ -5,6 +5,7 @@ import {
   FILE_COPIED,
   FILE_PUSH_TO_ZIPCONSUMER,
   FILE_PUSH_TO_QRCODE_CONSUMER,
+  FILE_QRCODE_CREATED,
 } from "../constants/file.constant";
 
 interface IFileCreate {
@@ -25,6 +26,7 @@ enum IFileStatus {
   copied = FILE_COPIED,
   push_to_zip = FILE_PUSH_TO_ZIPCONSUMER,
   push_to_qrCode = FILE_PUSH_TO_QRCODE_CONSUMER,
+  qrcode_created = FILE_QRCODE_CREATED,
 }
 
 interface ICreateZipPayload {

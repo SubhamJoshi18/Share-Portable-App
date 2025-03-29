@@ -6,6 +6,7 @@ import {
   FILE_PROCESS,
   FILE_PUSH_TO_QRCODE_CONSUMER,
   FILE_PUSH_TO_ZIPCONSUMER,
+  FILE_QRCODE_CREATED,
   FILE_SENDED,
   FILE_UPLOAD,
 } from "../../constants/file.constant";
@@ -41,6 +42,7 @@ const UrlSchema = new mongoose.Schema(
         FILE_PUSH_TO_ZIPCONSUMER,
         FILE_COPIED,
         FILE_PUSH_TO_QRCODE_CONSUMER,
+        FILE_QRCODE_CREATED,
       ],
       default: FILE_IDLE,
     },
