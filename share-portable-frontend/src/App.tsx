@@ -54,6 +54,8 @@ const App = () => {
       const urlId = response.data.data.urlId;
       setUploaded(true);
 
+      await new Promise((resolve) => setTimeout(resolve, 10000));
+
       await fetchQRCode(urlId);
     } catch (error) {
       setError("Upload failed, please try again.");
