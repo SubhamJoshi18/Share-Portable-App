@@ -23,14 +23,14 @@ function handleUnexpectedError(): void {
   });
 
   process.on("SIGTERM", (signal) => {
-    const message = `****** ride-app-backend Process ${process.pid} received a SIGTERM signal - ${signal}`;
+    const message = `****** share-portable-app-backend Process ${process.pid} received a SIGTERM signal - ${signal}`;
     console.log(message);
     scannerLogger.error(message);
     process.exit(0);
   });
 
   process.on("SIGINT", (signal) => {
-    const message = `****** ride-app-backend Process ${process.pid} received a SIGINT signal - ${signal}`;
+    const message = `****** share-portable-app-backend Process ${process.pid} received a SIGINT signal - ${signal}`;
     console.log(message);
     scannerLogger.error(message);
     process.exit(0);
@@ -39,8 +39,17 @@ function handleUnexpectedError(): void {
 
 function handleNotFoundError(req: Request, res: Response): void {
   res.status(HTTP_STATUS.NOT_FOUND.CODE).json({
-    message: `The Route : ${req.originalUrl} Does not Exists on the Ride App`,
+    message: `The Route : ${req.originalUrl} Does not Exists on the Share Portable App`,
   });
 }
 
-export { handleUnexpectedError, handleNotFoundError };
+function checkValidDoneResult(value: string) {
+  return (
+    typeof value === "string" &&
+    value.includes("done") &&
+    value.startsWith("d") &&
+    value.endsWith("e")
+  );
+}
+
+export { handleUnexpectedError, handleNotFoundError, checkValidDoneResult };
