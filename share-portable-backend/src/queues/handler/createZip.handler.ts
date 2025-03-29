@@ -34,7 +34,10 @@ async function processZipFiles(
   });
 }
 
-async function createZipHandler(msg: ConsumeMessage | null,channel : Channel): Promise<any> {
+async function createZipHandler(
+  msg: ConsumeMessage | null,
+  channel: Channel
+): Promise<any> {
   try {
     if (msg?.content) {
       const content = msg.content.toString();
