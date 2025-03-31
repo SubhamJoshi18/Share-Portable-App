@@ -65,6 +65,40 @@ const App = () => {
     setUploading(false);
   };
 
+  const handleMultiFileUpload = async () => {
+    if (!selectedFiles) return;
+
+    const formData = new FormData();
+    for (let i = 0; i < selectedFiles.length; i++) {
+      formData.append("files[]", selectedFiles[i]);
+    }
+
+    setUploading(true);
+    setUploaded(false);
+    setQrCode(null);
+    setError(null);
+
+    try {
+      const response = await axios.post(
+        "http://localhost:3000/api/v1/upload-file",
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        }
+      );
+
+      const urlId = response.data.data.urlId;
+      setUploaded(true);
+
+      setTimeout(() => fetchQRCode(urlId), 5000);
+    } catch (error) {
+      setError("Upload failed, please try again.");
+      console.error("Upload failed:", error);
+    } finally {
+      setUploading(false);
+    }
+  };
+
   const fetchQRCode = async (urlId: string) => {
     try {
       const response = await axios.get(
