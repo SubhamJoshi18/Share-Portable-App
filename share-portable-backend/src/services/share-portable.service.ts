@@ -14,6 +14,9 @@ import { UrlRepository } from "../repository/share-portable.repository";
 import scannerLogger from "../libs/logger";
 import FileHelper from "../helpers/file.helper";
 import QRCodeRepsotiory from "../repository/share-portable-qrCode.repository";
+import { JPEG_MIME_TYPE, PDF_MIME_TYPE } from "../constants/mime-type.constant";
+import { handleJPEGMimeType } from "../handlers/jpeg-mime-type.handler";
+import { handlePDFJsonType } from "../handlers/pdf-mime.type.handler";
 
 class SharePortableService {
   public urlRepostiory: UrlRepository;
@@ -153,6 +156,71 @@ class SharePortableService {
 
     const qrDataUrl = isQrExistsForUrl.qrCodeDataUrl;
     return qrDataUrl;
+  }
+
+  public async uploadMultipleFileServices(payload: IFileCreate[]) {
+    const UrlIds: any[] = [];
+    scannerLogger.info(`User Uploaded : ${payload.length} Files`);
+
+    const validPayloadSizeFile = payload.filter(
+      (data: IFileCreate) => !isNaN(data.size) && Math.ceil(data.size) > 0
+    );
+
+    for (const file of validPayloadSizeFile) {
+      const fileMimeType = file.mimetype;
+      const [fileName, mimeType]: any = fileMimeType?.split("/");
+
+      let urlId = crypto
+        .createHash("sha256")
+        .update(JSON.stringify(file))
+        .digest("hex");
+
+      const isUrlExists = await this.urlRepostiory.findUrlId(urlId);
+
+      if (isUrlExists) {
+        scannerLogger.info(
+          `Url Already Exists, Recreating New Hash Url Id For : ${JSON.stringify(
+            file
+          )} `
+        );
+        urlId = crypto
+          .createHash("sha256")
+          .update(JSON.stringify(file))
+          .digest("hex");
+      }
+
+      const saveInitialResult = await this.urlRepostiory.createResult(urlId);
+
+      scannerLogger.info(
+        `The URL ID : ${urlId} Has been Initial Saved Successfully with Id : ${saveInitialResult._id}`
+      );
+
+      if (saveInitialResult) {
+        Object.assign(file, { urlId: saveInitialResult.urlId });
+      }
+
+      const result = await transformAndHandleMimeTypes(
+        file as IFileCreate,
+        mimeType as string
+      );
+
+      if (!checkValidDoneResult(result as string)) {
+        throw new BadRequestException(
+          HTTP_STATUS.BAD_REQUEST.CODE,
+          `
+              The File Upload and Publish Process Has been Failed, Reprocessing Again`
+        );
+      }
+
+      scannerLogger.info(`Clearing the Uploads Directory`);
+
+      await this.fileHelper.clearTheUploadFiles();
+      UrlIds.push(urlId);
+    }
+
+    return {
+      urlId: Array.from(new Set(UrlIds)),
+    };
   }
 }
 

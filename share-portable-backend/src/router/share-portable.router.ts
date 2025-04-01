@@ -22,4 +22,10 @@ sharePortableRouter.get(
   SharePortableController.getS3BucketPathAndDownload
 );
 
+sharePortableRouter.post(
+  "/upload-multiple-file",
+  upload.array("file"),
+  SharePortableController.uploadmultipleFileController
+);
+
 export default sharePortableRouter;
